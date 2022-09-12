@@ -21,6 +21,7 @@ private:
 
     struct sockaddr_in serv_addr;
     struct sockaddr_in clnt_addr;
+    socklen_t clnt_addr_size;
 
 
 public:

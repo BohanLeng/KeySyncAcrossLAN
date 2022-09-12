@@ -21,6 +21,24 @@ KeySyncServer::KeySyncServer(int port)
         error_handling("bind() error");
 
     std::cout << "server bind port successful!" << '\n';
+
+    //call listen() to become listen-able
+    if (listen(serv_sock, 5) == -1)
+        error_handling("listen() error");
+
+    std::cout << "start listening successful!" << '\n';
+
+    clnt_addr_size = sizeof(clnt_addr);
+    //call accept() to handle connect request. if there is not, it will not return until one appears
+    clnt_sock = accept(serv_sock, (struct sockaddr *)&clnt_addr, &clnt_addr_size);
+    if (clnt_sock == -1)
+        error_handling("accept() error");
+
+    char message[] = "received!";
+    write(clnt_sock, message, sizeof(message));
+    close(clnt_sock);
+    close(serv_sock);
+    return;
 }
 
 KeySyncServer::~KeySyncServer()
