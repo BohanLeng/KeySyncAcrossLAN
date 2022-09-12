@@ -2,7 +2,7 @@
 #include <iostream>
 #include "ErrorHandler.h"
 
-KeySyncServer::KeySyncServer(int port)
+KeySyncServer::KeySyncServer(char* port)
 {
     // Create socket
     serv_sock = socket(PF_INET, SOCK_STREAM, 0);
@@ -13,7 +13,7 @@ KeySyncServer::KeySyncServer(int port)
     memset(&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    server_port = port;
+    server_port = atoi(port);
     serv_addr.sin_port = htons(server_port);
 
     // assign ip and port
@@ -38,10 +38,10 @@ KeySyncServer::KeySyncServer(int port)
     write(clnt_sock, message, sizeof(message));
     close(clnt_sock);
     close(serv_sock);
-    return;
 }
 
 KeySyncServer::~KeySyncServer()
 {
-
+    close(clnt_sock);
+    close(serv_sock);
 }

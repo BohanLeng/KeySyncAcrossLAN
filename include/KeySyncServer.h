@@ -25,7 +25,7 @@ private:
 
 
 public:
-    KeySyncServer(int port);
+    KeySyncServer(char* port);
     ~KeySyncServer();
 
 private:
