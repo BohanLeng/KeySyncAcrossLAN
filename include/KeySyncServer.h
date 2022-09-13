@@ -15,13 +15,12 @@ class KeySyncServer
     
 private:
     int server_port;
-
     int serv_sock;
-    int clnt_sock;
+    int clnt_sock[5];
+    int clnt_count = 5;
 
     struct sockaddr_in serv_addr;
-    struct sockaddr_in clnt_addr;
-    socklen_t clnt_addr_size;
+    struct sockaddr_in clnt_addr[5];
 
 
 public:

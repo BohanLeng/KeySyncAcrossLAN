@@ -1,3 +1,5 @@
 build/
 bin/
 .vscode/
+open_client_test.sh
+open_server_test.sh
