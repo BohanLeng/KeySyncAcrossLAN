@@ -4,8 +4,9 @@
 
 using namespace std;
 
-KeySyncServer::KeySyncServer(char* port, char *ip= nullptr) : SocketApp(port, ip)
+KeySyncServer::KeySyncServer(char* port, char *ip= nullptr, int keyCode=-1) : SocketApp(port, ip, keyCode)
 {
+    
     // Create socket
     serv_sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (serv_sock == -1)
@@ -28,7 +29,7 @@ KeySyncServer::KeySyncServer(char* port, char *ip= nullptr) : SocketApp(port, ip
     if (listen(serv_sock, 5) == -1)
         error_handling("listen() error");
 
-    cout << "start listening successful!" << '\n';
+    cout << "start waiting for client connection successful!" << '\n';
 
     socklen_t clnt_addr_size = sizeof(clnt_addr[0]);
     //call accept() to handle connect request. if there is not, it will not return until one appears
@@ -36,21 +37,22 @@ KeySyncServer::KeySyncServer(char* port, char *ip= nullptr) : SocketApp(port, ip
     if (clnt_sock[0] == -1)
         error_handling("accept() error");
 
-    char message[] = "received!";
+    cout << "Connection to client established." << '\n';
+
+    char message[] = "Server responded to connection request!";
     write(clnt_sock[0], message, sizeof(message));
 
-    char send_buff[10];
-    
-    while(true)
-    {
-        cout << "Please input message to be sent:\n";
-        cin >> send_buff;
-        send(clnt_sock[0], send_buff, 9, 0);
-    }
+    // Create KeyboardListener
+    m_listener = new KeyboardListener(this, keyCode);
+    cout << "Keyboard Listener initialised. Waiting to Keyboard input.\n";
+    m_listener->StartKeyDetection();
 }
 
 KeySyncServer::~KeySyncServer()
 {
+    if(m_listener != nullptr)
+        delete(m_listener);
+
     close(serv_sock);
     for (int i = 0; i < clnt_count;i++)
         try{
@@ -64,5 +66,7 @@ KeySyncServer::~KeySyncServer()
 
 void KeySyncServer::TriggerAction()
 {
-    cout << "yes\n";
+    cout << "Key wanted pressed.\n";
+    char send_buff[] = "`KeyPressed";
+    send(clnt_sock[0], send_buff, 15, 0);
 }

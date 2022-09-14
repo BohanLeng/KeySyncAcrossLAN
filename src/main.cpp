@@ -3,12 +3,11 @@
 #include "KeySyncClient.h"
 #include <string.h>
 
+#define KEYCODE_SPACE 49
+#define KEYCODE_R 15
+
 int main(int argc, char *argv[])
 {
-    KeyboardListener listener = KeyboardListener(3);
-
-    listener.StartKeyDetection();
-
     if (argc < 2)
     {
         std::cout << "argument required!\n";
@@ -22,7 +21,7 @@ int main(int argc, char *argv[])
             std::cout << "Server usage : " << argv[0] << "< port >\n ";
             exit(1);
         }
-        KeySyncServer server = KeySyncServer(argv[2], nullptr);
+        KeySyncServer server = KeySyncServer(argv[2], nullptr, KEYCODE_R);
     }
     else if (strcmp(argv[1], "-c") == 0)
     {

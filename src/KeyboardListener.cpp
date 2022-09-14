@@ -9,17 +9,20 @@ CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef
     // The incoming keycode.
     CGKeyCode key = (CGKeyCode)CGEventGetIntegerValueField(event, kCGKeyboardEventKeycode);
 
+    KeyboardListener *listener = (KeyboardListener *)refcon;
+
     //Keypress code goes here.
-    // KeyStrokeDetected(key);
-    // printKeyCode(key);
-    ((KeyboardListener *) refcon) -> KeyStrokeDetected(key);
-    ((KeyboardListener *) refcon) -> StopKeyDetection();
+    if (key == listener -> GetListeningKey())
+    {
+        listener -> KeyStrokeDetected(key);
+        //listener -> StopKeyDetection();
+    }
 
     // We must return the event for it to be useful.
     return event;
 }
 
-KeyboardListener::KeyboardListener(CGKeyCode key_to_listen)
+KeyboardListener::KeyboardListener(SocketApp *socketAppRef, CGKeyCode key_to_listen) : m_app(socketAppRef), key_listening(key_to_listen)
 {
     // Create an event tap. We are interested in key presses.
     eventMask = CGEventMaskBit(kCGEventKeyUp);
@@ -36,8 +39,6 @@ KeyboardListener::KeyboardListener(CGKeyCode key_to_listen)
     runLoopRef = CFRunLoopGetCurrent();
     CFRunLoopAddSource(runLoopRef, runLoopSource, kCFRunLoopCommonModes);
 
-    StartKeyDetection();
-
 }
 
 KeyboardListener::~KeyboardListener()
@@ -45,9 +46,15 @@ KeyboardListener::~KeyboardListener()
 
 }
 
+CGKeyCode KeyboardListener::GetListeningKey()
+{
+    return key_listening;
+}
+
 void KeyboardListener::KeyStrokeDetected(CGKeyCode keycode)
 {
-    std::cout << "CGKeyCode= " << keycode << '\n';
+    std::cout << "CGKeyCode = " << keycode << '\n';
+    m_app->TriggerAction();
 }
 
 void KeyboardListener::StartKeyDetection() {
@@ -62,3 +69,5 @@ void KeyboardListener::StopKeyDetection() {
 
     CFRunLoopStop(runLoopRef);
 }
+
+

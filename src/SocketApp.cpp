@@ -1,6 +1,6 @@
 #include "SocketApp.h"
 
-SocketApp::SocketApp(char *port, char *ip) {
+SocketApp::SocketApp(char *port, char *ip, int keyCode) {
 
 }
 

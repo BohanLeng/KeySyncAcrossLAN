@@ -26,11 +26,14 @@ private:
 
 
 public:
-    KeySyncServer(char* port, char* ip);
+    KeySyncServer(char* port, char* ip, int keyCode);
     ~KeySyncServer();
 
-private:
     void TriggerAction() override;
+
+private:
+    KeyboardListener* m_listener;
+
 };
 
 

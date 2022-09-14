@@ -6,11 +6,12 @@
 class SocketApp
 {
 public:
-    SocketApp(char* port, char *ip);
+    SocketApp(char* port, char *ip, int keyCode);
     ~SocketApp();
 
-private:
     virtual void TriggerAction() = 0;
+
+private:
 
 };
 
