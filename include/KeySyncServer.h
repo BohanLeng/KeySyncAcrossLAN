@@ -9,8 +9,10 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <sys/socket.h>
+#include "SocketApp.h"
+#include "KeyboardListener.h"
 
-class KeySyncServer
+class KeySyncServer : public SocketApp
 {
     
 private:
@@ -24,10 +26,11 @@ private:
 
 
 public:
-    KeySyncServer(char* port);
+    KeySyncServer(char* port, char* ip);
     ~KeySyncServer();
 
 private:
+    void TriggerAction() override;
 };
 
 

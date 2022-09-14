@@ -4,7 +4,7 @@
 
 using namespace std;
 
-KeySyncServer::KeySyncServer(char* port)
+KeySyncServer::KeySyncServer(char* port, char *ip= nullptr) : SocketApp(port, ip)
 {
     // Create socket
     serv_sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
@@ -60,4 +60,9 @@ KeySyncServer::~KeySyncServer()
 
         }
             
+}
+
+void KeySyncServer::TriggerAction()
+{
+    cout << "yes\n";
 }

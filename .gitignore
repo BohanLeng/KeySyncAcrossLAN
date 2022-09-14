@@ -1,5 +1,12 @@
 build/
 bin/
 .vscode/
+cmake-build-debug/
+.idea/
+
+
+# for test use
 open_client_test.sh
 open_server_test.sh
+keypress.c
+keypress

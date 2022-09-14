@@ -5,6 +5,10 @@
 
 int main(int argc, char *argv[])
 {
+    KeyboardListener listener = KeyboardListener(3);
+
+    listener.StartKeyDetection();
+
     if (argc < 2)
     {
         std::cout << "argument required!\n";
@@ -18,7 +22,7 @@ int main(int argc, char *argv[])
             std::cout << "Server usage : " << argv[0] << "< port >\n ";
             exit(1);
         }
-        KeySyncServer server = KeySyncServer(argv[2]);
+        KeySyncServer server = KeySyncServer(argv[2], nullptr);
     }
     else if (strcmp(argv[1], "-c") == 0)
     {
@@ -34,12 +38,5 @@ int main(int argc, char *argv[])
         std::cout << "Usage: " << "[c for clinet, s for server]\n";
         exit(1);
     }
-
-    char *cmd;
-
-    sprintf(cmd, "osascript -e 'tell app \"Finder\" to open startup disk");
-    system(cmd);
-
-    return(0);
 
 }

@@ -14,6 +14,8 @@ project(KeySyncAcrossLAN VERSION 0.0.1 LANGUAGES C CXX)
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
+
+
 # add_executable(main main.cpp src/KeySyncServer.cpp src/ErrorHandler.cpp src/KeyStrokeSim.cpp)
 
 add_subdirectory(./src)
