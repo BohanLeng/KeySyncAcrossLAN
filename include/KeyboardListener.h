@@ -14,18 +14,18 @@ CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef
 class KeyboardListener
 {
 public:
-    KeyboardListener(SocketApp *socketAppRef, CGKeyCode key_to_listen);
+    KeyboardListener(SocketApp *socketAppRef, CGKeyCode *keys_to_listen);
     ~KeyboardListener();
 
     void StartKeyDetection();
     void StopKeyDetection();
 
-    CGKeyCode GetListeningKey();
+    CGKeyCode* GetListeningKeys();
     void KeyStrokeDetected(CGKeyCode keycode);
 
 private:
     SocketApp* m_app;
-    CGKeyCode key_listening;
+    CGKeyCode* keys_listening;
 
     CFMachPortRef      eventTap;
     CGEventMask        eventMask;

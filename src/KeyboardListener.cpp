@@ -12,17 +12,21 @@ CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGEventRef
     KeyboardListener *listener = (KeyboardListener *)refcon;
 
     //Keypress code goes here.
-    if (key == listener -> GetListeningKey())
-    {
-        listener -> KeyStrokeDetected(key);
-        //listener -> StopKeyDetection();
-    }
+
+    CGKeyCode *keys = listener->GetListeningKeys();
+    for (int i = 0; i < sizeof(keys); i++)
+        if (key == keys[i])
+        {
+            listener->KeyStrokeDetected(key);
+            // listener -> StopKeyDetection();
+            break;
+        }
 
     // We must return the event for it to be useful.
     return event;
 }
 
-KeyboardListener::KeyboardListener(SocketApp *socketAppRef, CGKeyCode key_to_listen) : m_app(socketAppRef), key_listening(key_to_listen)
+KeyboardListener::KeyboardListener(SocketApp *socketAppRef, CGKeyCode *keys_to_listen) : m_app(socketAppRef), keys_listening(keys_to_listen)
 {
     // Create an event tap. We are interested in key presses.
     eventMask = CGEventMaskBit(kCGEventKeyUp);
@@ -46,9 +50,9 @@ KeyboardListener::~KeyboardListener()
 
 }
 
-CGKeyCode KeyboardListener::GetListeningKey()
+CGKeyCode* KeyboardListener::GetListeningKeys()
 {
-    return key_listening;
+    return keys_listening;
 }
 
 void KeyboardListener::KeyStrokeDetected(CGKeyCode keycode)

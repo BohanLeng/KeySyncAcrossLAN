@@ -26,7 +26,7 @@ private:
 
 
 public:
-    KeySyncServer(char* port, char* ip, int keyCode);
+    KeySyncServer(char* port, char* ip, int *keyCodes);
     ~KeySyncServer();
 
     void TriggerAction() override;

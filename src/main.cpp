@@ -21,7 +21,8 @@ int main(int argc, char *argv[])
             std::cout << "Server usage : " << argv[0] << "< port >\n ";
             exit(1);
         }
-        KeySyncServer server = KeySyncServer(argv[2], nullptr, KEYCODE_R);
+        int keycodes[] = {KEYCODE_R, KEYCODE_SPACE};
+        KeySyncServer server = KeySyncServer(argv[2], nullptr, keycodes);
     }
     else if (strcmp(argv[1], "-c") == 0)
     {

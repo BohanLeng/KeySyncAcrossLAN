@@ -4,7 +4,7 @@
 
 using namespace std;
 
-KeySyncServer::KeySyncServer(char* port, char *ip= nullptr, int keyCode=-1) : SocketApp(port, ip, keyCode)
+KeySyncServer::KeySyncServer(char* port, char *ip= nullptr, int *keyCodes=nullptr) : SocketApp(port, ip, keyCodes)
 {
     
     // Create socket
@@ -43,8 +43,8 @@ KeySyncServer::KeySyncServer(char* port, char *ip= nullptr, int keyCode=-1) : So
     write(clnt_sock[0], message, sizeof(message));
 
     // Create KeyboardListener
-    m_listener = new KeyboardListener(this, keyCode);
-    cout << "Keyboard Listener initialised. Waiting to Keyboard input.\n";
+    m_listener = new KeyboardListener(this, (CGKeyCode*)keyCodes);
+    cout << "Keyboard Listener initialised. Waiting for Keyboard input.\n";
     m_listener->StartKeyDetection();
 }
 
@@ -66,7 +66,7 @@ KeySyncServer::~KeySyncServer()
 
 void KeySyncServer::TriggerAction()
 {
-    cout << "Key wanted pressed.\n";
+    cout << "Key pressed.\n";
     char send_buff[] = "`KeyPressed";
     send(clnt_sock[0], send_buff, 15, 0);
 }
